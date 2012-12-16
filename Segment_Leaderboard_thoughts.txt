@@ -1,0 +1,27 @@
+Segment Leaderboard thoughts
+
+1. Get athlete ids from club wotriders
+
+eg. http://app.strava.com/api/v1/clubs/18485/members
+
+
+2. For each athlete get rides
+
+eg. http://app.strava.com/api/v1/rides?athleteId=1300808     (if more than 50 results add offset += 50)
+
+##3. Get each ride totals
+##eg. http://app.strava.com/api/v1/rides/32405857
+
+4. Get each ride efforts  (this includes the segment name/id)
+
+eg. http://www.strava.com/api/v2/rides/32405857/efforts
+
+
+
+####
+###
+####
+
+Club segment best
+
+http://app.strava.com/api/v1/segments/654754/efforts?clubId=18485&best=true
