@@ -6,7 +6,7 @@ class GenerateHTML {
 
     static void main(String[] args) {
         new File("index.html").withWriter { writer ->
-        writer.write '''
+        writer.write """
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
@@ -27,20 +27,20 @@ class GenerateHTML {
     <div class="container">
 
         <header>
-            <h1>Wot Riders</h1>
+            <h1>Wot Riders - updated ${new Date().format("d MMM")}</h1>
         </header>
-
+       
         <iframe name="embedme" height='405' width='100%' frameborder='0' allowtransparency='true' scrolling='no' src=''></iframe>
-
+        
         <table class="table table-striped">
         <tr>
                 <th>Segment</th>
                 <th>Leader</th>
                 <th>Time</th>
         </tr>
-        '''
+        """
                 new File("segments").eachFile {
-                    
+                    if(it.name.startsWith('.')) return
                     def segment = new JsonSlurper().parseText(it.text)
                     def best = segment.efforts.min { it.elapsedTime }
                     writer.write """
@@ -53,7 +53,7 @@ class GenerateHTML {
                 }
                 writer.write '''
         </table>
-
+        
     </div>
 
 </body>
