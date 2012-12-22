@@ -93,30 +93,75 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+body {
+    background: #797979 url("../img/carbon.jpg") 50% 50% repeat;
+}
+
+@-webkit-keyframes race {
+  0%   { left: -10000px; }
+  100% { left: 0 }
+}
+@-moz-keyframes race {
+  0%   { left: -10000px; }
+  100% { left: 0 }
+}
+@-o-keyframes race {
+  0%   { left: -10000px; }
+  100% { left: 0 }
+}
+@keyframes race {
+  0%   { left: -10000px; }
+  100% { left: 0 }
+}
+
 header h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 800;
-    font-style: italic;
-    color: #92c33e;
-    text-shadow: 2px 2px 0 #5a7d0f;
+    position: relative;
+    margin: 0.4em 0 0.2em;
+    font-family: 'Montserrat Subrayada', sans-serif;
+    font-weight: 400;
+    letter-spacing: -1px;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+    font-size: 5em;
+
+
+    -webkit-animation: race 1s normal;
+    -moz-animation: race 1s normal;
+    -o-animation: race 1s normal;
+    animation: race 1s normal;
+}
+
+header p {
+    float: left;
+    color: #ff4a00;
+    font-weight: bold;
+}
+
+header span {
+    float: right;
+    color: white;
+    font-size: 0.7em;
 }
 
 .alt { 
     background-color: #eee;
 }
 
+.table td {
+    background: #fff;
+}
 
+iframe {
+    background: #fff;
+    margin: 0 0 20px;
+}
 
-
-
-
-
-
-
-
-
-
-
+.table {
+    -webkit-transition: all 0.3s ease-out; 
+    -moz-transition: all 0.3s ease-out; 
+    -o-transition: all 0.3s ease-out; 
+    transition: all 0.3s ease-out; 
+}
 
 
 /* ==========================================================================
