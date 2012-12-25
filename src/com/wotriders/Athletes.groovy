@@ -22,16 +22,16 @@ class Athletes {
         def members = json.members
 
         // this will run every time since will get all my new rides
+        new File("members").mkdir()
         members.each { def member ->
             athletes.log "fetching ${member.name} rides"
-
             def file = new File("members/${member.name.replace(" ", "_").replace(".", "").toLowerCase()}.json") //thanks my long name we have to replace the dots
             def content = athletes.getContent("http://app.strava.com/api/v1/rides?athleteId=${member.id}")
             if (content) {
                 file.text = content
             }
         }
-
+        new File("rides").mkdir()
         new File('members').eachFile { File file ->
             if (file.isFile()) {
                 def name = file.name.split("_").first()
