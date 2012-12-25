@@ -137,7 +137,7 @@ header p {
     font-weight: bold;
 }
 
-header span {
+header span, .ridden {
     float: right;
     color: white;
     font-size: 0.7em;
