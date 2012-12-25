@@ -16,8 +16,6 @@ eg. http://app.strava.com/api/v1/rides?athleteId=1300808     (if more than 50 re
 
 eg. http://www.strava.com/api/v2/rides/32405857/efforts
 
-
-
 ####
 ###
 ####
@@ -25,3 +23,9 @@ eg. http://www.strava.com/api/v2/rides/32405857/efforts
 Club segment best
 
 http://app.strava.com/api/v1/segments/654754/efforts?clubId=18485&best=true
+
+create tabs for:
+    # all club segments ridden (even if its only me, or danny, or scott, anyone)
+    # all segments that everyone have ridden (if there is a newbie it won't show till he rides it as well)
+    # all segments that at least two people have ridden (a better approach for the issue above)
+    # maybe a search that loads a js file and indexes the table for search.
