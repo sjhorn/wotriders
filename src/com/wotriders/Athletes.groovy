@@ -58,7 +58,7 @@ class Athletes {
         new File('rides').eachFile { File file ->
             if (file.isFile()) {
                 def ride = new JsonSlurper().parseText(file.text)
-
+                new File("segments").mkdir()
                 ride.efforts.each { def effort ->
                     def segmentFile = new File("segments/${effort.segment.id}.json")
                     // we only need to fetch the new efforts/segments, since the previous ones wont ever change
