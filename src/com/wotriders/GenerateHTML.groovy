@@ -5,7 +5,11 @@ import groovy.json.JsonSlurper
 class GenerateHTML {
 
     static void main(String[] args) {
-        def index = 0;
+        boolean iframeDone = false
+        // inversely sorts the tree map
+        def comparator = [ compare: { first, second-> first.equals(second) ? 0: first > second  ? -1 : 1 } ] as Comparator
+        TreeMap map = new TreeMap(comparator)
+
         new File("index.html").withWriter { writer ->
         writer.write """
 <!DOCTYPE html>
@@ -32,39 +36,54 @@ class GenerateHTML {
             <p>30km/h average or bust</p>
             <span>Last updated ${new Date().format("d MMM")}</span>
         </header>
-
         """
 
-        new File("segments").eachFile {
-            if(it.name.startsWith('.')) return
-            def segment = new JsonSlurper().parseText(it.text)
-            def best = segment.efforts.min { it.elapsedTime }
-            if (index == 0) {
-                 writer.write """
-                <iframe name="embedme" height='337' width='100%' frameborder='0' allowtransparency='true' scrolling='no' src="http://app.strava.com/segments/${segment.segment.id}/embed"></iframe>
+        new File("segments").eachFile { def file ->
+            if(file.isFile()) {
+                def segment = new JsonSlurper().parseText(file.text)
+                def best = segment.efforts.min { it.elapsedTime }
 
-                <table class="table table-striped">
-                <tr>
-                        <th>Segment</th>
-                        <th>Leader</th>
-                        <th>Time</th>
-                </tr>
+                // sorts out how many people have ridden the segment segment and add into the key X(times ridden) a list of the needed map data
+                // map = [5:[[id:123445, name:"CORO DRIVE TT", athlete: "Marcos", time:"120"], [id:778688, name:"GO BETWEEN BRIDGE", athlete: "Scott", time:"600"], ...], 4: [..]]
+                if(! map.containsKey(segment.efforts?.size())) { // generate the key
+                    map << [ (segment.efforts?.size()) : []]
+                }
+
+                // add the data to the list
+                map[(segment.efforts?.size())] << [id: segment.segment.id, name: segment.segment.name, athlete: best.athlete.name, time: best.elapsedTime]
+
+            }
+        }
+
+        map.each { riddenByXRiders, segments ->
+            if(!iframeDone) {
+                iframeDone = true
+                writer.write """
+                    <iframe name="embedme" height='337' width='100%' frameborder='0' allowtransparency='true' scrolling='no' src="http://app.strava.com/segments/${segments.first().id}/embed"></iframe>
                 """
             }
-            index++;
-
             writer.write """
-            <tr>
-                <td><a href="http://app.strava.com/segments/${segment.segment.id}/embed" target="embedme">${segment.segment.name}</a></td>
-                <td>${best.athlete.name}</td>
-                <td>${best.elapsedTime} secs</td>
-            </tr>
+                <span class='ridden'>Ridden by: ${riddenByXRiders} wotriders</span>
+                <table class="table table-striped">
+                <tr>
+                    <th>Segment</th>
+                    <th>Leader</th>
+                    <th>Time</th>
+                </tr>
             """
-
+            segments.each { segmentBest ->
+                writer.write """
+                    <tr>
+                        <td><a href="http://app.strava.com/segments/${segmentBest.id}/embed" target="embedme">${segmentBest.name}</a></td>
+                        <td>${segmentBest.athlete}</td>
+                        <td>${segmentBest.time} secs</td>
+                    </tr>
+                """
+            }
+            writer.write "</table>"
         }
+
         writer.write '''
-        </table>
-        
     </div>
 
 </body>
