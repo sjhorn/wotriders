@@ -11,7 +11,7 @@ class GenerateHTML {
         TreeMap map = new TreeMap(comparator)
 
         new File("index.html").withWriter { writer ->
-        writer.write """
+            writer.write """
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
@@ -38,52 +38,68 @@ class GenerateHTML {
         </header>
         """
 
-        new File("segments").eachFile { def file ->
-            if(file.isFile()) {
-                def segment = new JsonSlurper().parseText(file.text)
-                def best = segment.efforts.min { it.elapsedTime }
+            new File("segments").eachFile { def file ->
+                if(file.isFile()) {
+                    def segment = new JsonSlurper().parseText(file.text)
 
-                // sorts out how many people have ridden the segment segment and add into the key X(times ridden) a list of the needed map data
-                // map = [5:[[id:123445, name:"CORO DRIVE TT", athlete: "Marcos", time:"120"], [id:778688, name:"GO BETWEEN BRIDGE", athlete: "Scott", time:"600"], ...], 4: [..]]
-                if(! map.containsKey(segment.efforts?.size())) { // generate the key
-                    map << [ (segment.efforts?.size()) : []]
+                    // get sorted efforts
+                    def effortsSorted = segment.efforts.sort{ it.elapsedTime }
+
+                    def best = effortsSorted[0]
+                    def rup = effortsSorted[1]
+
+                    // sorts out how many people have ridden the segment segment and add into the key X(times ridden) a list of the needed map data
+                    // map = [5:[[id:123445, name:"CORO DRIVE TT", athlete: "Marcos", time:"120"], [id:778688, name:"GO BETWEEN BRIDGE", athlete: "Scott", time:"600"], ...], 4: [..]]
+                    if(! map.containsKey(segment.efforts?.size())) { // generate the key
+                        map << [ (segment.efforts?.size()) : []]
+                    }
+
+                    // add the data to the list
+                    // safe navigation operator '?' rocks!
+                    map[(segment.efforts?.size())] << [
+                        id: segment.segment.id, name: 
+                        segment.segment.name,
+                        athlete: best.athlete.name, 
+                        time: best.elapsedTime,
+                        rupAthlete: rup?.athlete?.name,
+                        rupTime: rup?.elapsedTime
+                    ]
                 }
-
-                // add the data to the list
-                map[(segment.efforts?.size())] << [id: segment.segment.id, name: segment.segment.name, athlete: best.athlete.name, time: best.elapsedTime]
-
             }
-        }
 
-        map.each { riddenByXRiders, segments ->
-            if(!iframeDone) {
-                iframeDone = true
-                writer.write """
+            map.each { riddenByXRiders, segments ->
+                if(!iframeDone) {
+                    iframeDone = true
+                    writer.write """
                     <iframe name="embedme" height='337' width='100%' frameborder='0' allowtransparency='true' scrolling='no' src="http://app.strava.com/segments/${segments.first().id}/embed"></iframe>
                 """
-            }
-            writer.write """
+                }
+                writer.write """
                 <span class='ridden'>Ridden by: ${riddenByXRiders} wotriders</span>
                 <table class="table table-striped">
                 <tr>
                     <th>Segment</th>
                     <th>Leader</th>
                     <th>Time</th>
+                    <th>Gap</th>
+                    <th>Chaser</th>
                 </tr>
             """
-            segments.each { segmentBest ->
-                writer.write """
+                segments.each { segmentBest ->
+                    writer.write """
                     <tr>
                         <td><a href="http://app.strava.com/segments/${segmentBest.id}/embed" target="embedme">${segmentBest.name}</a></td>
                         <td>${segmentBest.athlete}</td>
                         <td>${segmentBest.time} secs</td>
+                        <td>${segmentBest.rupTime? segmentBest.rupTime - segmentBest.time + " sec(s)" : ""}</td>
+                        <td>${segmentBest.rupAthlete? segmentBest.rupAthlete : ""}</td>
                     </tr>
                 """
+                }
+                writer.write "</table>"
             }
-            writer.write "</table>"
-        }
 
-        writer.write '''
+            writer.write '''
     </div>
 
 </body>
