@@ -94,7 +94,7 @@ textarea {
    ========================================================================== */
 
 body {
-    background: #797979 url("../img/carbon.jpg") 50% 50% repeat;
+    background: #797979 url("/images/carbon.jpg") 50% 50% repeat;
 }
 
 @-webkit-keyframes race {
@@ -161,7 +161,7 @@ header span, .ridden {
 .profiles div {
 	float: left;
 	margin: 0.7em;
-	width: 180px; 
+	width: 220px; 
 	text-align: center;
 }
 .profiles img {
@@ -202,7 +202,7 @@ header span, .ridden {
 
 
 div.achievement {
-    background-image: url(http://d26ifou2tyrp3u.cloudfront.net/assets/sprites/sprites-achievements-98acda14241f3a615b131d8e79af0ce5.png);
+    background-image: url(../images/sprites-achievements.png);
     height: 32px;
     width: 32px;
     
