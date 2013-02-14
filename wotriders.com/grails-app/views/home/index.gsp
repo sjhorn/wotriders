@@ -11,12 +11,12 @@
             <img src="../images/motivated_by_strava.png" width="171" height="43">
             <h1>Wot Riders</h1>
             <p>30km/h average or bust</p>
-            
+
         </header>
         <div class="profiles">
             <g:each var="member" in="${members}">
             <div>
-                <a href="member?strava_id=${member.strava_id}"><img src="${member.avatar}"></a>
+                <a href="member?strava_id=${member.strava_id}"><img src="${(member.strava_id == 797002) ? '../images/turtle.png' :  member.avatar}"></a>
                 <h3>${member.name}</h3>
                 <span>${medals[member.strava_id][0]} gold, ${medals[member.strava_id][1]} silver, ${medals[member.strava_id][2]} bronze</span>
             </div>
