@@ -1,6 +1,8 @@
 package wotriders
 
-import java.util.concurrent.TimeUnit;
+import groovy.json.JsonSlurper
+
+import java.util.concurrent.TimeUnit
 
 import javax.annotation.PostConstruct
 
@@ -76,6 +78,7 @@ class StravaService {
 {"key":[608674,"Murarrie Crit Course"],"value":[[1153292,144],[1728968,261]]}
 ]}
 '''
-		println jsonText
+		def json = new JsonSlurper().parseText(jsonText)
+		
 	}
 }
