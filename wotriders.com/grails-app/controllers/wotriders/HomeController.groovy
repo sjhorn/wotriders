@@ -47,4 +47,9 @@ class HomeController {
             redirect("/")
         }
     }
+	
+	def clear() {
+		stravaService.clearCache()
+		render "Cache cleared"
+	}
 }

@@ -30,11 +30,9 @@ class Strava2Couch {
         Strava2Couch s2c = new Strava2Couch(stravaHttp:stravaHttp, couchHttp: couchHttp)
         
         List<Athlete> athletes = s2c.updateAndGetAthletes()
-        /*
         athletes?.each { Athlete athlete ->
             s2c.updateRides(athlete)
         }
-        */
         
         s2c.updateBestTimes()
         
@@ -117,6 +115,7 @@ class Strava2Couch {
     }
     
     void updateBestTimes() {
+		println "Updating best times, this can take a while...."
         def res = couchHttp.get("${COUCHDB_HOST}/_design/wotriders/_view/segmentids?group=true")
         if(res.code == 200) {
             println res.json.rows

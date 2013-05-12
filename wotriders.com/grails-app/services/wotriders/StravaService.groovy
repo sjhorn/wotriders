@@ -4,14 +4,15 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
+import com.google.common.cache.Cache
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.wotriders.HttpClient
 
 class StravaService {
     def grailsApplication
     HttpClient couchHttp
-    def cache
+    Cache cache
     
     @PostConstruct
     public setup() {
@@ -64,4 +65,17 @@ class StravaService {
         return cache.get("besttimes")
     }
     
+	void clearCache() {
+		cache.invalidateAll()
+	}
+	
+	static void main(String[] args) {
+		String jsonText = '''
+{"rows":[
+{"key":[574115,"Mount Gravatt"],"value":[[1085072,466]]},
+{"key":[608674,"Murarrie Crit Course"],"value":[[1153292,144],[1728968,261]]}
+]}
+'''
+		println jsonText
+	}
 }

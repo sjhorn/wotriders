@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 
 class HttpClient {
     def connectTimeout = 500
-    def readTimeout = 60000 // default to one minute
+    def readTimeout = 600000 // default to ten minutes
     def log = [ error: { System.err.println(it) } ]
     String username 
     String password

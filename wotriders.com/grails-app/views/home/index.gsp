@@ -8,12 +8,12 @@
     <div class="container">
 
         <header>
-            <img src="../images/motivated_by_strava.png" width="171" height="43">
+            <iframe height='120' width='400' frameborder='0' allowtransparency='true' scrolling='no' src='http://app.strava.com/clubs/wotriders/latest-rides/53521f594a0329b577b7666313cf1763f6f4d9f1?show_rides=false'></iframe>
             <h1>Wot Riders</h1>
             <p>30km/h average or bust</p>
-            
         </header>
         <div class="profiles">
+        
             <g:each var="member" in="${members}">
             <div>
                 <a href="member?strava_id=${member.strava_id}"><img src="${member.avatar}"></a>
@@ -52,6 +52,8 @@
          </table>
          </g:each>
     </div>
-
+    <div style="text-align: center">
+		<img src="../images/motivated_by_strava.png" width="171" height="43">
+	</div>
 </body>
 </html>
