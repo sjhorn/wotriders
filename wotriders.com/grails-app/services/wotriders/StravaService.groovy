@@ -49,15 +49,19 @@ class StravaService {
     Map medals() {
         Map medals = [:]
         cache.get("besttimes")?.value?.each { value ->
+            int medal = 0
+            long lastTime = 0            
             value.eachWithIndex { athleteData, index ->
-                def athlete = athleteData[0]
+                String athlete = athleteData[0]
+                long time = athleteData[1] as long
                 if(!medals[athlete]) {
-                    medals[athlete] = []
+                    medals[athlete] = [0,0,0]
                 }
-                if(!medals[athlete][index]) {
-                    medals[athlete][index] = 0
+                if(lastTime != time) {
+                    medal = index
                 }
-                medals[athlete][index]++
+                medals[athlete][medal]++
+                lastTime = time
             }
         }
         return medals.sort { it.value[0] }
