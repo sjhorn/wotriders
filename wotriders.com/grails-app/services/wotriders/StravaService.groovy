@@ -52,10 +52,10 @@ class StravaService {
             int medal = 0
             long lastTime = 0            
             value.eachWithIndex { athleteData, index ->
-                String athlete = athleteData[0]
+                int athlete = athleteData[0] as int
                 long time = athleteData[1] as long
                 if(medals[athlete] == null) {
-                    medals[athlete] = [].withEagerDefault { 0 }
+                    medals[athlete] = [0,0,0].withEagerDefault { 0 }
                 }
                 if(lastTime != time) {
                     medal = index
