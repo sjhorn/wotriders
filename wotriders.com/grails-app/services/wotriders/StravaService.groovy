@@ -55,15 +55,18 @@ class StravaService {
                 int athlete = athleteData[0] as int
                 long time = athleteData[1] as long
                 if(medals[athlete] == null) {
-                    medals[athlete] = [0,0,0].withEagerDefault { 0 }
+                    medals[athlete] = [0,0,0,0].withEagerDefault { 0 }
                 }
                 if(lastTime != time) {
                     medal = index
                 }
-                if(medals[athlete][medal] != null) {
-                    medals[athlete][medal]++
+                if(medals[athlete][medal+1] != null) {
+                    medals[athlete][medal+1] += 1
                 }
                 lastTime = time
+                if(value.size() == 1) {
+                    medals[athlete][0] += 1
+                }
             }
         }
         return medals.sort { it.value[0] }
