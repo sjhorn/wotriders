@@ -54,8 +54,8 @@ class StravaService {
             value.eachWithIndex { athleteData, index ->
                 String athlete = athleteData[0]
                 long time = athleteData[1] as long
-                if(!medals[athlete]) {
-                    medals[athlete] = [0,0,0]
+                if(medals[athlete] == null) {
+                    medals[athlete] = [].withEagerDefault { 0 }
                 }
                 if(lastTime != time) {
                     medal = index
