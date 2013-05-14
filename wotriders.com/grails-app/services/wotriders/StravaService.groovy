@@ -60,7 +60,9 @@ class StravaService {
                 if(lastTime != time) {
                     medal = index
                 }
-                medals[athlete][medal]++
+                if(medals[athlete][medal] != null) {
+                    medals[athlete][medal]++
+                }
                 lastTime = time
             }
         }
